@@ -6,7 +6,8 @@ set -euo pipefail
 
 # Get full CPU brand string (e.g., "Apple M1" or "Intel(R) Core(TM) i5-...")
 # This is used to detect Apple Silicon vs Intel Macs
-export CPU_BRAND_STRING="$(sysctl -n machdep.cpu.brand_string 2>/dev/null || echo 'Unknown')"
+CPU_BRAND_STRING="$(sysctl -n machdep.cpu.brand_string 2>/dev/null || echo 'Unknown')"
+export CPU_BRAND_STRING
 
 linuxify_check_os() {
   if ! [[ "$OSTYPE" =~ darwin* ]]; then
@@ -24,7 +25,8 @@ linuxify_check_brew() {
 }
 
 linuxify_set_prefix() {
-  export BREW_PREFIX="$(brew --prefix)"
+  BREW_PREFIX="$(brew --prefix)"
+  export BREW_PREFIX
 }
 
 linuxify_check_dirs() {
