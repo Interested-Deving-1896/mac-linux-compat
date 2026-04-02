@@ -133,7 +133,9 @@ linuxify_install() {
 
 
     # Make changes to PATH/MANPATH/INFOPATH/LDFLAGS/CPPFLAGS
-    cp .linuxify ~/.linuxify
+    # env.sh lives alongside this script; copy it to ~/.linuxify
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    cp "${SCRIPT_DIR}/env.sh" ~/.linuxify
     echo "Add '. ~/.linuxify' to your ~/.bashrc, ~/.zshrc or your shell's equivalent config file"
 }
 

@@ -78,8 +78,8 @@ fi
 # ── bsdcoreutils ──────────────────────────────────────────────────────────────
 if [[ "$OPT_BSD" -eq 1 ]]; then
     echo "==> Building and installing bsdcoreutils ..."
-    if [[ ! -d "$SCRIPT_DIR/bsdcoreutils/upstream" ]]; then
-        echo "  Initialising submodule ..."
+    if [[ ! -d "$SCRIPT_DIR/bsdcoreutils/upstream/.git" ]]; then
+        echo "  Initialising bsdcoreutils submodule ..."
         git -C "$SCRIPT_DIR" submodule update --init bsdcoreutils/upstream
     fi
     mkdir -p "$SCRIPT_DIR/bsdcoreutils/build"
