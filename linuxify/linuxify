@@ -6,7 +6,8 @@ set -euo pipefail
 
 # Get full CPU brand string (e.g., "Apple M1" or "Intel(R) Core(TM) i5-...")
 # This is used to detect Apple Silicon vs Intel Macs
-export CPU_BRAND_STRING="$(sysctl -n machdep.cpu.brand_string 2>/dev/null || echo 'Unknown')"
+CPU_BRAND_STRING="$(sysctl -n machdep.cpu.brand_string 2>/dev/null || echo 'Unknown')"
+export CPU_BRAND_STRING
 
 linuxify_check_os() {
   if ! [[ "$OSTYPE" =~ darwin* ]]; then
@@ -24,12 +25,13 @@ linuxify_check_brew() {
 }
 
 linuxify_set_prefix() {
-  export BREW_PREFIX="$(brew --prefix)"
+  BREW_PREFIX="$(brew --prefix)"
+  export BREW_PREFIX
 }
 
 linuxify_check_dirs() {
     result=0
-    for dir in ${BREW_PREFIX}/bin ${BREW_PREFIX}/sbin; do
+    for dir in "${BREW_PREFIX}/bin" "${BREW_PREFIX}/sbin"; do
         if [[ ! -d $dir || ! -w $dir ]]; then
             echo "$dir must exist and be writeable"
             result=1
@@ -106,11 +108,11 @@ linuxify_install() {
 
     # Install all formulas
     for (( i=0; i<${#linuxify_formulas[@]}; i++ )); do
-        if brew ls --versions ${linuxify_formulas[i]}; then
+        if brew ls --versions "${linuxify_formulas[i]}"; then
             echo "Found Existing ${linuxify_formulas[i]}"
         else
             echo "Installing ${linuxify_formulas[i]}"
-            brew install ${linuxify_formulas[i]}
+            brew install "${linuxify_formulas[i]}"
         fi
     done
 
@@ -120,11 +122,11 @@ linuxify_install() {
     fi
 
     # Offer to change shell to newly installed bash
-    read -p "Do you want to change your shell to the latest bash (Y/N)? " -n 1 -r
+    read -r -p "Do you want to change your shell to the latest bash (Y/N)? " -n 1
     if [[ $REPLY =~ [Yy]$ ]]; then
         grep -qF "${BREW_PREFIX}/bin/bash" /etc/shells || echo "${BREW_PREFIX}/bin/bash" | sudo tee -a /etc/shells > /dev/null
         echo # Blank line so the password entry isn't bunched-up
-        chsh -s ${BREW_PREFIX}/bin/bash
+        chsh -s "${BREW_PREFIX}/bin/bash"
     else
         echo "OK, leaving your shell as $SHELL"
     fi
@@ -148,7 +150,7 @@ linuxify_uninstall() {
     # macOS 10.14 Mojave and earlier: bash
     bash_is_local=false
     if [[ $SHELL =~ local ]]; then
-        read -p "Do you want to change your shell back to macOS default (macOS >= 10.15 Catalina ? zsh : bash) ? " -n 1 -r
+        read -r -p "Do you want to change your shell back to macOS default (macOS >= 10.15 Catalina ? zsh : bash) ? " -n 1
         if [[ $REPLY =~ [Yy]$ ]]; then
             sudo sed -i.bak "|${BREW_PREFIX}/bin/bash|d" /etc/shells && sudo rm /etc/shells.bak
             echo
@@ -165,7 +167,7 @@ linuxify_uninstall() {
             fi
         else
             echo "OK, leaving your shell as $SHELL"
-            if [[ $SHELL == ${BREW_PREFIX}/bin/bash ]]; then
+            if [[ $SHELL == "${BREW_PREFIX}/bin/bash" ]]; then
                 bash_is_local=true
             fi
         fi
@@ -173,8 +175,9 @@ linuxify_uninstall() {
 
     # Uninstall all formulas in reverse order
     for (( i=${#linuxify_formulas[@]}-1; i>=0; i-- )); do
-        if [[ ${linuxify_formulas[i]} != bash ]]; then
-            brew uninstall -f $(echo "${linuxify_formulas[i]}" | cut -d ' ' -f1)
+        if [[ "${linuxify_formulas[i]}" != bash ]]; then
+            formula=$(echo "${linuxify_formulas[i]}" | cut -d ' ' -f1)
+            brew uninstall -f "${formula}"
         fi
     done
 
@@ -193,8 +196,9 @@ linuxify_info() {
     linuxify_check_brew;
 
     for (( i=0; i<${#linuxify_formulas[@]}; i++ )); do
-        brew info $(echo "${linuxify_formulas[i]}" | cut -d ' ' -f1)
-        printf "\n\n===============================================================================================================================\n\n"
+        formula=$(echo "${linuxify_formulas[i]}" | cut -d ' ' -f1)
+        brew info "${formula}"
+        printf "\n\n%s\n\n" "==============================================================================================================================="
     done
 }
 
