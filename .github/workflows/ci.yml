@@ -45,6 +45,8 @@ jobs:
           submodules: recursive
       - name: Install cmake
         run: sudo apt-get install -y cmake
+      - name: Ensure bsdcoreutils directory exists
+        run: test -d bsdcoreutils || { echo "Directory bsdcoreutils does not exist"; exit 1; }
       - name: Configure
         run: cmake -S bsdcoreutils -B bsdcoreutils/build -DCMAKE_BUILD_TYPE=Release
       - name: Build
