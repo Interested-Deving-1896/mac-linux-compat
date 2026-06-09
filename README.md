@@ -1,125 +1,75 @@
+[update-readmes]   Mode: rewrite — migrating to template structure...
 # mac-linux-compat
 
-Unified macOS/Linux CLI compatibility toolkit. Consolidates
-[linuxify](https://github.com/pkill37/linuxify),
-[mlsblk](https://github.com/projectamurat/mlsblk), and
-[BSDCoreUtils](https://github.com/DiegoMagdaleno/BSDCoreUtils).
+[![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/mac-linux-compat)
 
-## Components
+<!-- AI:start:what-it-does -->
+_Description pending._
+<!-- AI:end:what-it-does -->
 
-| Component | What it does | Platform |
-|---|---|---|
-| **linuxify** | Installs GNU coreutils/findutils/sed/tar/etc. on macOS via Homebrew, replacing BSD tools | macOS |
-| **mlsblk** | macOS port of Linux `lsblk` — lists block devices as a tree using `diskutil` + CoreFoundation | macOS |
-| **bsdcoreutils** | BSD-licensed coreutils from FreeBSD/OpenBSD/NetBSD, portable to Linux and macOS | macOS + Linux |
+## Architecture
 
-## Quick install
+<!-- AI:start:architecture -->
+_Architecture documentation pending._
+<!-- AI:end:architecture -->
 
-```bash
-# Install everything
-bash install.sh --all
+## Install
 
-# Or pick components
-bash install.sh --linuxify       # GNU tools on macOS
-bash install.sh --mlsblk         # lsblk for macOS
-bash install.sh --bsdcoreutils   # BSD coreutils
-```
-
----
-
-## linuxify
-
-Replaces macOS's BSD userland with GNU equivalents via Homebrew. After install,
-your shell gets `sed`, `grep`, `find`, `tar`, `make`, etc. behaving like Linux.
+<!-- Add installation instructions here. This section is yours — the AI will not modify it. -->
 
 ```bash
-# Install
-bash linuxify/linuxify install
-
-# Activate in current shell (add to ~/.zshrc or ~/.bashrc permanently)
-source linuxify/env.sh
-
-# Uninstall
-bash linuxify/linuxify uninstall
+git clone https://github.com/Interested-Deving-1896/mac-linux-compat.git
+cd mac-linux-compat
 ```
 
-**What gets installed:**
+## Usage
 
-- GNU coreutils, binutils, diffutils, findutils
-- gnu-sed, gnu-tar, gnu-which, gnu-indent
-- grep, gawk, gzip, screen, watch, wget, wdiff
-- bash (latest), git, openssh, vim, perl, python, rsync
+<!-- Add usage examples here. This section is yours — the AI will not modify it. -->
 
----
+## Configuration
 
-## mlsblk
+<!-- Document configuration options here. This section is yours — the AI will not modify it. -->
 
-macOS port of Linux `lsblk`. Lists block devices and partitions as a tree,
-using `diskutil list -plist` and CoreFoundation.
+## CI
 
-```bash
-# Build
-make mlsblk
+<!-- AI:start:ci -->
+_CI documentation pending._
+<!-- AI:end:ci -->
 
-# Install to /usr/local/bin
-make install-mlsblk
+## Mirror chain
 
-# Usage
-mlsblk                              # tree: NAME SIZE TYPE MOUNTPOINT
-mlsblk -f                           # add FSTYPE, LABEL, UUID
-mlsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT
-mlsblk -J                           # JSON output
-mlsblk -l                           # list format (no tree)
-```
-
-Example output:
+<!-- AI:start:mirror-chain -->
+This repo is maintained in [`Interested-Deving-1896/mac-linux-compat`](https://github.com/Interested-Deving-1896/mac-linux-compat) and mirrored through:
 
 ```
-NAME     SIZE   TYPE MOUNTPOINT
-disk0    500.1G disk
-├── disk0s1  524.3M part /System/Volumes/Preboot
-├── disk0s2  494.4G part /
-└── disk0s3  5.4G   part
-disk1    128.0G disk
-└── disk1s1  128.0G part /Volumes/External
+Interested-Deving-1896/mac-linux-compat  ──►  OpenOS-Project-OSP/mac-linux-compat  ──►  OpenOS-Project-Ecosystem-OOC/mac-linux-compat
 ```
 
----
+Changes flow downstream automatically via the hourly mirror chain in
+[`fork-sync-all`](https://github.com/Interested-Deving-1896/fork-sync-all).
+Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-Deving-1896`.
+<!-- AI:end:mirror-chain -->
 
-## bsdcoreutils
+## Contributors
 
-BSD-licensed coreutils ported from FreeBSD, OpenBSD, and NetBSD. Useful for
-portability testing or when GPL dependencies are undesirable.
+<!-- AI:start:contributors -->
+_Contributors pending._
+<!-- AI:end:contributors -->
 
-```bash
-# Initialise submodule and build
-make bsdcoreutils
+## Origins
 
-# Install (tools get a 'b' prefix: bcat, bls, bcp, ...)
-sudo make -C bsdcoreutils/build install
-```
+<!-- AI:start:origins -->
+_Original project — no upstream fork._
+<!-- AI:end:origins -->
 
-See [bsdcoreutils/README.md](bsdcoreutils/README.md) for the full tool list.
+## Resources
 
----
-
-## Directory layout
-
-```
-mac-linux-compat/
-├── linuxify/
-│   ├── linuxify      # install/uninstall script
-│   └── env.sh        # PATH/MANPATH/INFOPATH setup (source in shell config)
-├── mlsblk/
-│   ├── mlsblk.c      # single-file C implementation
-│   └── Makefile
-├── bsdcoreutils/
-│   ├── README.md
-│   └── upstream/     # git submodule → DiegoMagdaleno/BSDCoreUtils
-├── install.sh        # unified installer
-└── Makefile
-```
+<!-- AI:start:resources -->
+_No additional resource files found._
+<!-- AI:end:resources -->
 
 ## License
 
-GPL-3.0-or-later. See [LICENSE](LICENSE) and [CREDITS.md](CREDITS.md).
+<!-- AI:start:license -->
+<!-- License not detected — add a LICENSE file to this repo. -->
+<!-- AI:end:license -->
